@@ -1,0 +1,22 @@
+{
+  "name": "black-lamp/blcms-payment",
+  "description": "Payment module for Blcms-shop",
+  "keywords": ["yii2", "payment", "shop", "blcms"],
+  "type": "yii2-extension",
+  "authors": [
+    {
+      "name": "Albert Gainutdinov",
+      "email": "xalbert.einsteinx@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.4.0",
+    "yiisoft/yii2": ">=2.0.4",
+    "black-lamp/blcms-shop": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "bl\\cms\\payment\\": ""
+    }
+  }
+}
