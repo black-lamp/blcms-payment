@@ -1,5 +1,5 @@
 <?php
-namespace bl\cms\payment\models;
+namespace bl\cms\payment\common\entities;
 
 use Yii;
 use yii\db\ActiveRecord;
