@@ -12,7 +12,9 @@
   "require": {
     "php": ">=5.4.0",
     "yiisoft/yii2": ">=2.0.4",
-    "black-lamp/blcms-shop": "*"
+    "black-lamp/blcms-shop": "*",
+    "black-lamp/yii2-multi-lang": "1.1.*",
+    "black-lamp/yii2-imagable": "1.*",
   },
   "autoload": {
     "psr-4": {
