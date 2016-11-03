@@ -11,8 +11,17 @@ use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
-$this->title = Yii::t('app', 'Create Payment Method');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Payment Methods'), 'url' => ['index']];
+if ($model->isNewRecord) {
+    $this->title = Yii::t('payment', 'Adding new payment method');
+}
+else  {
+    if ($modelTranslation->isNewRecord) {
+        $this->title = Yii::t('payment', 'Adding new payment method translation');
+    }
+    else {
+        $this->title = Yii::t('payment', 'Editing payment method translation');
+    }
+}$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Payment Methods'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
