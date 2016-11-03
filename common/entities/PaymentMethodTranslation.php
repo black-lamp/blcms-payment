@@ -1,13 +1,15 @@
 <?php
-namespace bl\cms\payment\common\entities;
+/**
+ * @author Albert Gainutdinov <xalbert.einsteinx@gmail.com>
+ */
 
+namespace bl\cms\payment\common\entities;
 use bl\multilang\entities\Language;
 use Yii;
 use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "payment_method_translation".
- * @author Albert Gainutdinov <xalbert.einsteinx@gmail.com>
  *
  * @property integer $id
  * @property integer $payment_method_id

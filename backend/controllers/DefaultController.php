@@ -3,7 +3,9 @@ namespace bl\cms\payment\backend\controllers;
 
 use bl\cms\payment\common\entities\PaymentMethod;
 use bl\cms\payment\common\entities\PaymentMethodTranslation;
+use bl\multilang\entities\Language;
 use Yii;
+use yii\base\Exception;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
@@ -19,10 +21,10 @@ class DefaultController extends Controller
      */
     public function actionIndex()
     {
-        $paymentMethods = PaymentMethodTranslation::find()->all();
+        $model = PaymentMethod::find()->all();
 
         return $this->render('index', [
-            'paymentMethods' => $paymentMethods,
+            'model' => $model,
         ]);
     }
 
@@ -30,40 +32,49 @@ class DefaultController extends Controller
     /**
      * Creates a new PaymentMethod model.
      * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionSave()
-    {
-        $model = new PaymentMethodTranslation();
-
-//        $model = new bl\cms\payment\common\entities\PaymentMethodTranslation();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('save', [
-                'model' => $model,
-            ]);
-        }
-    }
-
-    /**
-     * Updates an existing PaymentMethod model.
-     * If update is successful, the browser will be redirected to the 'view' page.
+     *
      * @param integer $id
+     * @param integer $languageId
      * @return mixed
+     * @throws Exception
      */
-    public function actionUpdate($id)
+    public function actionSave($id = null, $languageId = null)
     {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+        if (empty($languageId)) {
+            $languageId = Language::getCurrent()->id;
         }
+
+        if (!empty($id)) {
+            $model = PaymentMethod::findOne($id);
+            if (empty($model)) throw new NotFoundHttpException();
+            $modelTranslation = PaymentMethodTranslation::find()
+                ->where(['payment_method_id' => $model->id, 'language_id' => $languageId])->one();
+            if (empty($modelTranslation)) {
+                $modelTranslation = new PaymentMethodTranslation();
+            }
+        }
+        else {
+            $model = new PaymentMethod();
+            $modelTranslation = new PaymentMethodTranslation();
+        }
+        if (\Yii::$app->request->isPost) {
+            if ($modelTranslation->load(Yii::$app->request->post())) {
+                if ($modelTranslation->validate()) {
+                    $model->save();
+                    $modelTranslation->payment_method_id = $model->id;
+                    $modelTranslation->language_id = $languageId;
+
+                    $modelTranslation->save();
+                    return $this->redirect(['save', 'id' => $model->id, 'languageId' => $languageId]);
+                }
+            }
+
+        }
+        return $this->render('save', [
+            'model' => $model,
+            'modelTranslation' => $modelTranslation,
+            'selectedLanguage' => Language::findOne($languageId)
+        ]);
     }
 
     /**
@@ -71,25 +82,13 @@ class DefaultController extends Controller
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
+     * @throws NotFoundHttpException
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
-    }
-
-    /**
-     * Finds the PaymentMethod model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return PaymentMethod the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel($id)
-    {
         if (($model = PaymentMethod::findOne($id)) !== null) {
-            return $model;
+            $model->delete();
+            return $this->redirect(['index']);
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }

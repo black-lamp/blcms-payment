@@ -1,6 +1,7 @@
 <?php
 namespace bl\cms\payment\common\entities;
 
+use bl\multilang\behaviors\TranslationBehavior;
 use Yii;
 use yii\db\ActiveRecord;
 
@@ -14,6 +15,20 @@ use yii\db\ActiveRecord;
  */
 class PaymentMethod extends ActiveRecord
 {
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            'translation' => [
+                'class' => TranslationBehavior::className(),
+                'translationClass' => PaymentMethodTranslation::className(),
+                'relationColumn' => 'payment_method_id'
+            ],
+        ];
+    }
+
     /**
      * @inheritdoc
      */

@@ -5,7 +5,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 /* @var $this yii\web\View */
-/* @var $paymentMethods bl\cms\payment\models\PaymentMethod */
+/* @var $model bl\cms\payment\common\entities\PaymentMethod */
 
 $this->title = Yii::t('payment', 'Payment Methods');
 $this->params['breadcrumbs'][] = $this->title;
@@ -13,14 +13,18 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h5>
-            <i class="glyphicon glyphicon-list">
-            </i>
-            <?= $this->title; ?>
-        </h5>
-        <p>
-            <?= Html::a(Yii::t('payment', 'Add payment method'), Url::toRoute(['save', 'languageId' => Language::getCurrent()->id]), ['class' => 'btn btn-success']) ?>
-        </p>
+        <div class="row">
+            <h5 class="col-md-6">
+                <i class="glyphicon glyphicon-list">
+                </i>
+                <?= $this->title; ?>
+            </h5>
+            <p class="col-md-6">
+                <?= Html::a(Yii::t('payment', 'Add payment method'),
+                    Url::toRoute(['save', 'languageId' => Language::getCurrent()->id]),
+                    ['class' => 'btn btn-xs btn-primary pull-right']) ?>
+            </p>
+        </div>
     </div>
 
     <div class="panel-body">
@@ -32,14 +36,21 @@ $this->params['breadcrumbs'][] = $this->title;
                 <th class="">
                     <?= Yii::t('payment', 'Title'); ?>
                 </th>
+                <th class="col-md-2 text-center">
+                    <?= Yii::t('payment', 'Manage'); ?>
+                </th>
             </tr>
-            <?php foreach ($paymentMethods as $paymentMethod) : ?>
+            <?php foreach ($model as $paymentMethod) : ?>
                 <tr>
                     <td>
-                        <?= $paymentMethod->payment_method_id; ?>
+                        <?= $paymentMethod->id; ?>
                     </td>
                     <td>
-                        <?= $paymentMethod->title; ?>
+                        <?= Html::a($paymentMethod->translation->title,
+                            Url::to(['save', 'id' => $paymentMethod->id, 'languageId' => Language::getCurrent()->id])); ?>
+                    </td>
+                    <td>
+                        <?= \bl\cms\shop\widgets\ManageButtons::widget(['model' => $paymentMethod]); ?>
                     </td>
                 </tr>
             <?php endforeach; ?>
