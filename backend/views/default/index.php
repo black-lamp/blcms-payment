@@ -1,5 +1,6 @@
 <?php
 
+use bl\imagable\helpers\FileHelper;
 use bl\multilang\entities\Language;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -36,6 +37,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 <th class="">
                     <?= Yii::t('payment', 'Title'); ?>
                 </th>
+                <th class="col-md-2">
+                    <?= Yii::t('payment', 'Logo'); ?>
+                </th>
                 <th class="col-md-2 text-center">
                     <?= Yii::t('payment', 'Manage'); ?>
                 </th>
@@ -48,6 +52,15 @@ $this->params['breadcrumbs'][] = $this->title;
                     <td>
                         <?= Html::a($paymentMethod->translation->title,
                             Url::to(['save', 'id' => $paymentMethod->id, 'languageId' => Language::getCurrent()->id])); ?>
+                    </td>
+                    <td>
+                        <?php if (!empty($paymentMethod->image)) : ?>
+                            <?= Html::a(Html::img(
+                                '/images/payment/' . FileHelper::getFullName(\Yii::$app->shop_imagable->get('payment', 'small', $paymentMethod->image)),
+                                ['class' => '']),
+                                Url::to(['save', 'id' => $paymentMethod->id, 'languageId' => Language::getCurrent()->id]));
+                            ?>
+                        <?php endif ;?>
                     </td>
                     <td>
                         <?= \bl\cms\shop\widgets\ManageButtons::widget(['model' => $paymentMethod]); ?>

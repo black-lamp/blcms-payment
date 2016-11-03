@@ -16,7 +16,6 @@ use yii\db\ActiveRecord;
  * @property integer $language_id
  * @property string $title
  * @property string $description
- * @property string $image
  *
  * @property Language $language
  * @property PaymentMethod $paymentMethod
@@ -39,7 +38,7 @@ class PaymentMethodTranslation extends ActiveRecord
         return [
             [['payment_method_id', 'language_id'], 'integer'],
             [['description'], 'string'],
-            [['title', 'image'], 'string', 'max' => 255],
+            [['title'], 'string', 'max' => 255],
             [['language_id'], 'exist', 'skipOnError' => true, 'targetClass' => Language::className(), 'targetAttribute' => ['language_id' => 'id']],
             [['payment_method_id'], 'exist', 'skipOnError' => true, 'targetClass' => PaymentMethod::className(), 'targetAttribute' => ['payment_method_id' => 'id']],
         ];

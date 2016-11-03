@@ -1,6 +1,7 @@
 <?php
 namespace bl\cms\payment\backend\controllers;
 
+use bl\cms\payment\common\models\PaymentImageModel;
 use bl\cms\payment\common\entities\PaymentMethod;
 use bl\cms\payment\common\entities\PaymentMethodTranslation;
 use bl\multilang\entities\Language;
@@ -8,6 +9,7 @@ use Yii;
 use yii\base\Exception;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\UploadedFile;
 
 /**
  * DefaultController implements the CRUD actions for PaymentMethod model.
@@ -58,6 +60,17 @@ class DefaultController extends Controller
             $modelTranslation = new PaymentMethodTranslation();
         }
         if (\Yii::$app->request->isPost) {
+
+            if ($model->load(\Yii::$app->request->post())) {
+                $imageModel = new PaymentImageModel();
+                $imageModel->imageFile = UploadedFile::getInstance($model, 'image');
+
+                if (!empty($imageModel->imageFile)) {
+                    $uploadedImageName = $imageModel->upload();
+                    $model->image = $uploadedImageName;
+                }
+            }
+
             if ($modelTranslation->load(Yii::$app->request->post())) {
                 if ($modelTranslation->validate()) {
                     $model->save();
@@ -92,5 +105,21 @@ class DefaultController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    public function actionDeleteImage($id) {
+        if (!empty($id)) {
+            $paymentMethod = PaymentMethod::findOne($id);
+
+            $isDeleted = \Yii::$app->shop_imagable->delete('payment', $paymentMethod->image);
+
+            if ($isDeleted) {
+                $paymentMethod->image = NULL;
+                $paymentMethod->save();
+                return $this->redirect(Yii::$app->request->referrer);
+            }
+            else throw new Exception('Deleting failed.');
+        }
+        else throw new NotFoundHttpException();
     }
 }

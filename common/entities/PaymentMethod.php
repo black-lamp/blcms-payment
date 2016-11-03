@@ -1,8 +1,9 @@
 <?php
 namespace bl\cms\payment\common\entities;
 
+use bl\imagable\helpers\base\BaseFileHelper;
 use bl\multilang\behaviors\TranslationBehavior;
-use Yii;
+use Exception;
 use yii\db\ActiveRecord;
 
 /**
@@ -10,11 +11,13 @@ use yii\db\ActiveRecord;
  * @author Albert Gainutdinov <xalbert.einsteinx@gmail.com>
  *
  * @property integer $id
+ * @property integer $image
  *
  * @property PaymentMethodTranslation[] $paymentMethodTranslations
  */
 class PaymentMethod extends ActiveRecord
 {
+
     /**
      * @inheritdoc
      */
@@ -43,6 +46,7 @@ class PaymentMethod extends ActiveRecord
     public function rules()
     {
         return [
+            [['image'], 'string'],
         ];
     }
 
