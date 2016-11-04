@@ -46,7 +46,6 @@ class PaymentMethod extends ActiveRecord
     public function rules()
     {
         return [
-            [['image'], 'string'],
         ];
     }
 
