@@ -45,21 +45,6 @@ class PaymentMethodTranslation extends ActiveRecord
     }
 
     /**
-     * @inheritdoc
-     */
-    public function attributeLabels()
-    {
-        return [
-            'id' => Yii::t('payment', 'ID'),
-            'payment_method_id' => Yii::t('payment', 'Payment Method ID'),
-            'language_id' => Yii::t('payment', 'Language ID'),
-            'title' => Yii::t('payment', 'Title'),
-            'description' => Yii::t('payment', 'Description'),
-            'image' => Yii::t('payment', 'Image'),
-        ];
-    }
-
-    /**
      * @return \yii\db\ActiveQuery
      */
     public function getLanguage()

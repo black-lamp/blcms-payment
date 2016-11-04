@@ -52,7 +52,7 @@ class PaymentMethod extends ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getPaymentMethodTranslations()
+    public function getTranslations()
     {
         return $this->hasMany(PaymentMethodTranslation::className(), ['payment_method_id' => 'id']);
     }
