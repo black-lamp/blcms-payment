@@ -8,9 +8,29 @@
  */
 use yii\helpers\ArrayHelper;
 
+\bl\cms\payment\widgets\assets\PaymentAsset::register($this);
 ?>
 
-<?= $form->field($order, 'payment_method_id')->textInput(); ?>
-<?= $form->field($order, 'payment_method_id')->radioList(ArrayHelper::map($paymentMethods, 'id', function($model) {
-    return $model->translation->title;
-})); ?>
+<div id="payment-selector">
+    <h3><?=Yii::t('payment', 'Payment method');?></h3>
+    <?= $form->field($order, 'payment_method_id')
+        ->radioList(ArrayHelper::map($paymentMethods, 'id', function ($model) {
+            return $model->translation->title;
+        }))->label(false); ?>
+
+    <div class="row">
+        <div class="col-md-3">
+            <img id="payment-image" src="" alt="">
+        </div>
+        <div class="col-md-9" id="payment-info">
+            <div class="payment-title">
+                <p id="payment-title"></p>
+            </div>
+            <div class="payment-description">
+                <p id="payment-description"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+

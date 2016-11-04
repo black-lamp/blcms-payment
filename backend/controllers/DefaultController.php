@@ -107,6 +107,14 @@ class DefaultController extends Controller
         }
     }
 
+    /**
+     * Deletes image from Payment method model.
+     *
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException
+     * @throws Exception
+     */
     public function actionDeleteImage($id) {
         if (!empty($id)) {
             $paymentMethod = PaymentMethod::findOne($id);
@@ -122,4 +130,5 @@ class DefaultController extends Controller
         }
         else throw new NotFoundHttpException();
     }
+
 }
