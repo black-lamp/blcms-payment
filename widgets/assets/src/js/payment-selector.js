@@ -20,23 +20,26 @@ $(document).ready(function () {
 
 /*GETTING METHOD INFO BY IT VALUE*/
 function getPaymentMethodInfo(elementValue) {
+    var languagePrefix = $('#payment-selector').data('language-prefix');
+
     $.ajax({
         type: "GET",
-        url: '/payment/default/get-payment-method-info',
+        url: languagePrefix + '/payment/default/get-payment-method-info',
         data: {
             'id': elementValue
         },
         success: function (data) {
 
             var paymentMethod = $.parseJSON(data).paymentMethod;
+            console.log(paymentMethod);
 
             /*Title settings*/
             var title = $('#payment-title');
-            $(title).text(paymentMethod['translations'][0]['title']);
+            $(title).text(paymentMethod['translation']['title']);
 
             /*Description setting*/
             var description = $('#payment-description');
-            $(description).text(paymentMethod['translations'][0]['description']);
+            $(description).text(paymentMethod['translation']['description']);
 
             /*Image settings*/
             var image = $('#payment-image');

@@ -6,12 +6,14 @@
  * @var $order \bl\cms\cart\models\Order
  * @var $form \yii\bootstrap\ActiveForm
  */
+use bl\multilang\entities\Language;
 use yii\helpers\ArrayHelper;
 
 \bl\cms\payment\widgets\assets\PaymentAsset::register($this);
+$languagePrefix = (Language::getCurrent()->lang_id != Language::getDefault()->lang_id) ? '/' . Language::getCurrent()->lang_id : '';
 ?>
 
-<div id="payment-selector">
+<div id="payment-selector" data-language-prefix="<?=$languagePrefix; ?>">
     <h3><?=Yii::t('payment', 'Payment method');?></h3>
     <?= $form->field($order, 'payment_method_id')
         ->radioList(ArrayHelper::map($paymentMethods, 'id', function ($model) {

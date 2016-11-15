@@ -8,6 +8,7 @@ namespace bl\cms\payment\frontend\controllers;
 
 use bl\cms\payment\common\entities\PaymentMethod;
 use bl\imagable\helpers\FileHelper;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
@@ -26,15 +27,17 @@ class DefaultController extends Controller
         if (\Yii::$app->request->isAjax) {
             if (!empty($id)) {
 
-                $paymentMethod = PaymentMethod::find()->with('translations')->asArray()->where(['id' => $id])->one();
+                $method = PaymentMethod::findOne($id);
+                $methodTranslation = $method->translation;
 
-                $paymentMethod['image'] = '/images/payment/' .
+                $method = ArrayHelper::toArray($method);
+                $method['translation'] = ArrayHelper::toArray($methodTranslation);
+                $method['image'] = '/images/payment/' .
                     FileHelper::getFullName(
-                        \Yii::$app->shop_imagable->get('payment', 'small', $paymentMethod['image']
+                        \Yii::$app->shop_imagable->get('payment', 'small', $method['image']
                         ));
-
                 return json_encode([
-                    'paymentMethod' => $paymentMethod,
+                    'paymentMethod' => $method,
                 ]);
             }
         }
