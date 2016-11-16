@@ -31,9 +31,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="panel-body">
         <table class="table table-hover table-striped table-bordered">
             <tr>
-                <th class="col-md-1">
-                    <?= Yii::t('payment', 'id'); ?>
-                </th>
                 <th class="">
                     <?= Yii::t('payment', 'Title'); ?>
                 </th>
@@ -46,9 +43,6 @@ $this->params['breadcrumbs'][] = $this->title;
             </tr>
             <?php foreach ($model as $paymentMethod) : ?>
                 <tr>
-                    <td>
-                        <?= $paymentMethod->id; ?>
-                    </td>
                     <td>
                         <?= Html::a($paymentMethod->translation->title,
                             Url::to(['save', 'id' => $paymentMethod->id, 'languageId' => Language::getCurrent()->id])); ?>

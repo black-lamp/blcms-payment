@@ -4,6 +4,7 @@ namespace bl\cms\payment\common\entities;
 use bl\imagable\helpers\base\BaseFileHelper;
 use bl\multilang\behaviors\TranslationBehavior;
 use Exception;
+use Yii;
 use yii\db\ActiveRecord;
 
 /**
@@ -46,6 +47,16 @@ class PaymentMethod extends ActiveRecord
     public function rules()
     {
         return [
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'image' => Yii::t('payment', 'Logo'),
         ];
     }
 
