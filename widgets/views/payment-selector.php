@@ -14,7 +14,6 @@ $languagePrefix = (Language::getCurrent()->lang_id != Language::getDefault()->la
 ?>
 
 <div id="payment-selector" data-language-prefix="<?=$languagePrefix; ?>">
-    <h3><?=Yii::t('payment', 'Payment method');?></h3>
     <?= $form->field($order, 'payment_method_id')
         ->radioList(ArrayHelper::map($paymentMethods, 'id', function ($model) {
             return $model->translation->title;
