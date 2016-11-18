@@ -1,9 +1,8 @@
 <?php
 namespace bl\cms\payment\common\entities;
 
-use bl\imagable\helpers\base\BaseFileHelper;
+use bl\imagable\helpers\FileHelper;
 use bl\multilang\behaviors\TranslationBehavior;
-use Exception;
 use Yii;
 use yii\db\ActiveRecord;
 
@@ -18,6 +17,11 @@ use yii\db\ActiveRecord;
  */
 class PaymentMethod extends ActiveRecord
 {
+
+    /**
+     * @var string
+     */
+    private $imagePath = '/images/payment/';
 
     /**
      * @inheritdoc
@@ -66,5 +70,28 @@ class PaymentMethod extends ActiveRecord
     public function getTranslations()
     {
         return $this->hasMany(PaymentMethodTranslation::className(), ['payment_method_id' => 'id']);
+    }
+
+    public function getBigLogo() {
+        $logo = $this->getLogo('big');
+        return $logo;
+    }
+
+    public function getThumbLogo() {
+        $logo = $this->getLogo('thumb');
+        return $logo;
+    }
+
+    public function getSmallLogo() {
+        $logo = $this->getLogo('small');
+        return $logo;
+    }
+
+    private function getLogo($size) {
+        if (!empty($this->image)) {
+            return $this->imagePath . FileHelper::getFullName(
+                \Yii::$app->shop_imagable->get('payment', $size, $this->image));
+        }
+        else return '';
     }
 }
