@@ -52,3 +52,11 @@ __Common config file:__
     ],
 ],
 ```
+
+**Roles and its permissions:**
+
+_paymentManager_
+- viewPaymentMethodList
+- savePaymentMethod
+- deletePaymentMethod
+

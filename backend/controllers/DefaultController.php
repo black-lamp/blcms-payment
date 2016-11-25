@@ -7,6 +7,7 @@ use bl\cms\payment\common\entities\PaymentMethodTranslation;
 use bl\multilang\entities\Language;
 use Yii;
 use yii\base\Exception;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
@@ -17,6 +18,36 @@ use yii\web\UploadedFile;
  */
 class DefaultController extends Controller
 {
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'actions' => ['index'],
+                        'roles' => ['viewPaymentMethodList'],
+                        'allow' => true,
+                    ],
+                    [
+                        'actions' => ['save', 'delete-image'],
+                        'roles' => ['savePaymentMethod'],
+                        'allow' => true,
+                    ],
+                    [
+                        'actions' => ['delete'],
+                        'roles' => ['deletePaymentMethod'],
+                        'allow' => true,
+                    ],
+                ],
+            ]
+        ];
+    }
+
     /**
      * Lists all PaymentMethod models.
      * @return mixed
