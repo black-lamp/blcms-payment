@@ -32,7 +32,6 @@ $this->params['breadcrumbs'][] = $this->title;
         <h5><?= Html::encode($this->title) ?></h5>
         <?= \bl\cms\shop\widgets\LanguageSwitcher::widget([
             'selectedLanguage' => $selectedLanguage,
-            'model' => $model
         ]);?>
     </div>
 
