@@ -31,7 +31,6 @@ function getPaymentMethodInfo(elementValue) {
         success: function (data) {
 
             var paymentMethod = $.parseJSON(data).paymentMethod;
-            console.log(paymentMethod);
 
             /*Title settings*/
             var title = $('#payment-title');
