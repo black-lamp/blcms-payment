@@ -3,8 +3,11 @@ namespace bl\cms\payment\common\entities;
 
 use bl\imagable\helpers\FileHelper;
 use bl\multilang\behaviors\TranslationBehavior;
+use ReflectionMethod;
 use Yii;
+use yii\base\Widget;
 use yii\db\ActiveRecord;
+use yii2tech\ar\position\PositionBehavior;
 
 /**
  * This is the model class for table "payment_method".
@@ -12,6 +15,9 @@ use yii\db\ActiveRecord;
  *
  * @property integer $id
  * @property integer $image
+ * @property integer $discount
+ * @property string $discount_counter
+ * @property string $discount_widget
  *
  * @property PaymentMethodTranslation[] $paymentMethodTranslations
  */
@@ -34,6 +40,10 @@ class PaymentMethod extends ActiveRecord
                 'translationClass' => PaymentMethodTranslation::className(),
                 'relationColumn' => 'payment_method_id'
             ],
+            'positionBehavior' => [
+                'class' => PositionBehavior::className(),
+                'positionAttribute' => 'position',
+            ],
         ];
     }
 
@@ -51,6 +61,8 @@ class PaymentMethod extends ActiveRecord
     public function rules()
     {
         return [
+            [['discount'], 'integer'],
+            [['discount_counter', 'discount_widget'], 'string']
         ];
     }
 
@@ -61,6 +73,9 @@ class PaymentMethod extends ActiveRecord
     {
         return [
             'image' => Yii::t('payment', 'Logo'),
+            'discount' => Yii::t('payment', 'Discount'),
+            'discount_counter' => Yii::t('payment', 'Discount counter'),
+            'discount_widget' => Yii::t('payment', 'Discount widget')
         ];
     }
 
@@ -93,5 +108,21 @@ class PaymentMethod extends ActiveRecord
                 \Yii::$app->shop_imagable->get('payment', $size, $this->image));
         }
         else return '';
+    }
+
+    public function widget($form) {
+        if(!empty($this->discount_widget)) {
+            $widgetClass = new \ReflectionClass($this->discount_widget);
+            if($widgetClass->isSubclassOf(Widget::className())) {
+                $widgetMethod = new ReflectionMethod($this->discount_widget, 'widget');
+                $widgetResult = $widgetMethod->invoke(null, ['form' => $form, 'paymentMethod' => $this]);
+
+                if(!empty($widgetResult)) {
+                    return $widgetResult;
+                }
+            }
+        }
+
+        return "";
     }
 }
