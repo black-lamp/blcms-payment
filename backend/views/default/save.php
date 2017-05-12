@@ -41,6 +41,11 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= $form->field($modelTranslation, 'title')->textInput() ?>
         <?= $form->field($modelTranslation, 'description')->textInput() ?>
 
+        <?= $form->field($model, 'discount')->textInput(['type' => 'number']) ?>
+
+        <?= $form->field($model, 'discount_counter')->textInput() ?>
+        <?= $form->field($model, 'discount_widget')->textInput() ?>
+
         <!--LOGO-->
         <div class="pull-right">
             <div>
