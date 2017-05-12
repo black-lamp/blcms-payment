@@ -33,7 +33,7 @@ class PaymentSelector extends Widget
 
     public function run()
     {
-        $paymentMethods = PaymentMethod::find()->all();
+        $paymentMethods = PaymentMethod::find()->orderBy('position')->all();
 
         return $this->render('payment-selector', [
             'order' => $this->order,
