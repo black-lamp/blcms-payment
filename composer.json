@@ -11,7 +11,7 @@
     {
       "name": "Vadim Gutsulyak",
       "email": "guts.vadim@gmail.com"
-    },
+    }
   ],
   "require": {
     "php": ">=5.4.0",
