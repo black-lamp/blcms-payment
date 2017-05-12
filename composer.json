@@ -7,7 +7,11 @@
     {
       "name": "Albert Gainutdinov",
       "email": "xalbert.einsteinx@gmail.com"
-    }
+    },
+    {
+      "name": "Vadim Gutsulyak",
+      "email": "guts.vadim@gmail.com"
+    },
   ],
   "require": {
     "php": ">=5.4.0",
@@ -20,5 +24,13 @@
     "psr-4": {
       "bl\\cms\\payment\\": ""
     }
-  }
+  },
+  "scripts": {
+    "post-update-cmd": [
+      "php yii migrate --migrationPath=@vendor/black-lamp/blcms-payment/migrations"
+    ],
+    "post-install-cmd": [
+      "php yii migrate --migrationPath=@vendor/black-lamp/blcms-payment/migrations"
+    ]
+  },
 }
